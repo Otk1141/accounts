@@ -1,1129 +1,333 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <meta name="description" content="Otk1 MC – The Ultimate Minecraft Network with 25+ game modes, real-time leaderboards, community hub, and more.">
-  <title>Otk1 MC | The Ultimate Minecraft Network</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0a0418;
-      color: #fff;
-      overflow-x: hidden;
-    }
-    .orb-bg {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      background: radial-gradient(circle at 10% 20%, #1f0c3c, #0a0418);
-    }
-    .orb-glow {
-      position: fixed;
-      width: 60vw;
-      height: 60vw;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(155,90,255,0.25) 0%, rgba(155,90,255,0) 70%);
-      filter: blur(100px);
-      z-index: -1;
-      animation: floatGlow 25s infinite alternate;
-    }
-    @keyframes floatGlow {
-      0% { transform: translate(10%, 20%) scale(1); opacity: 0.3; }
-      100% { transform: translate(-10%, -15%) scale(1.4); opacity: 0.6; }
-    }
-    .wrapper {
-      display: flex;
-      min-height: 100vh;
-      position: relative;
-      z-index: 5;
-    }
-    .side-nav {
-      width: 280px;
-      background: rgba(15, 12, 30, 0.65);
-      backdrop-filter: blur(16px);
-      border-right: 1px solid rgba(155, 90, 255, 0.4);
-      padding: 2rem 1rem;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      z-index: 10;
-    }
-    .logo-area {
-      text-align: center;
-      padding-bottom: 1rem;
-      border-bottom: 1px dashed rgba(155,90,255,0.4);
-    }
-    .logo-area h1 {
-      font-size: 1.8rem;
-      background: linear-gradient(135deg, #fff, #c084fc);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .nav-items {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 0.7rem 1rem;
-      border-radius: 1rem;
-      color: #ddd;
-      transition: all 0.25s ease;
-      cursor: pointer;
-      font-weight: 500;
-    }
-    .nav-item i { width: 24px; }
-    .nav-item.active, .nav-item:hover {
-      background: #9a4eff;
-      color: white;
-      box-shadow: 0 0 12px #9a4eff;
-      transform: translateX(5px);
-    }
-    .lang-account-group {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: auto;
-    }
-    .lang-toggle {
-      background: linear-gradient(135deg, #4e2d89, #2a1a4a);
-      border: none;
-      padding: 0.5rem;
-      border-radius: 2rem;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      transition: 0.2s;
-    }
-    .lang-toggle:hover { transform: scale(1.02); background: linear-gradient(135deg, #6b3dc9, #3a1f6e); }
-    .auth-container {
-      background: rgba(0,0,0,0.5);
-      border-radius: 1rem;
-      padding: 0.8rem;
-    }
-    .auth-tabs {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 0.8rem;
-    }
-    .auth-tab {
-      flex: 1;
-      text-align: center;
-      padding: 0.3rem;
-      border-radius: 2rem;
-      background: rgba(255,255,255,0.1);
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .auth-tab.active {
-      background: #9a4eff;
-      color: white;
-    }
-    .google-btn {
-      width: 100%;
-      background: #fff;
-      color: #000;
-      border: none;
-      padding: 0.4rem;
-      border-radius: 2rem;
-      margin: 0.5rem 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      cursor: pointer;
-      font-weight: 500;
-    }
-    .auth-form input {
-      width: 100%;
-      padding: 0.5rem;
-      margin-bottom: 0.5rem;
-      background: rgba(0,0,0,0.6);
-      border: 1px solid #9a4eff;
-      border-radius: 2rem;
-      color: white;
-      outline: none;
-    }
-    .auth-form button {
-      width: 100%;
-      background: #9a4eff;
-      border: none;
-      padding: 0.5rem;
-      border-radius: 2rem;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      justify-content: center;
-      background: rgba(30,20,60,0.8);
-      border-radius: 2rem;
-      padding: 0.3rem 0.8rem;
-      margin-top: 0.5rem;
-    }
-    .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: #9a4eff; display: flex; align-items: center; justify-content: center; }
-    .user-name { font-size: 0.8rem; font-weight: 500; }
-    .signout-btn {
-      background: none;
-      border: 1px solid #ff6b6b;
-      color: #ff6b6b;
-      padding: 0.2rem 0.6rem;
-      border-radius: 2rem;
-      font-size: 0.7rem;
-      cursor: pointer;
-    }
-    .main-content {
-      flex: 1;
-      padding: 2rem;
-      overflow-y: auto;
-    }
-    .hero-stats {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      background: rgba(0,0,0,0.35);
-      backdrop-filter: blur(8px);
-      border-radius: 2rem;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      border: 1px solid rgba(155,90,255,0.3);
-    }
-    .hero-title h2 { font-size: 2.5rem; background: linear-gradient(135deg, #fff, #c084fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .hero-title p { font-size: 1rem; opacity: 0.7; }
-    .hero-stats-box { display: flex; gap: 2rem; }
-    .hero-stat { text-align: center; }
-    .hero-stat .number { font-size: 1.8rem; font-weight: 800; color: #cb9eff; }
-    .copy-ip-btn { background: #9a4eff; border: none; padding: 0.6rem 1.2rem; border-radius: 2rem; font-weight: bold; cursor: pointer; transition: 0.1s; }
-    .copy-ip-btn:active { transform: scale(0.96); }
-    .grid-title {
-      font-size: 1.8rem;
-      margin: 2.5rem 0 1.2rem;
-      border-left: 5px solid #b87eff;
-      padding-left: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .top-players-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.2rem;
-    }
-    .top-card {
-      background: rgba(20,12,38,0.7);
-      backdrop-filter: blur(4px);
-      border-radius: 1.2rem;
-      padding: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      transition: all 0.25s;
-      border: 1px solid rgba(155,90,255,0.3);
-    }
-    .top-card:hover {
-      transform: translateY(-5px);
-      border-color: #c084fc;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-    .top-icon { font-size: 2.2rem; }
-    .top-info h4 { font-size: 1rem; }
-    .top-info p { font-size: 0.8rem; opacity: 0.8; }
-    .modes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.8rem;
-      margin: 2rem 0 3rem;
-    }
-    .game-card {
-      background: rgba(20,12,38,0.7);
-      backdrop-filter: blur(8px);
-      border-radius: 1.5rem;
-      padding: 1.5rem;
-      border: 1px solid rgba(155,90,255,0.4);
-      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .game-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-      transition: 0.5s;
-    }
-    .game-card:hover::before { left: 100%; }
-    .game-card:hover {
-      transform: translateY(-10px);
-      border-color: #c084fc;
-      box-shadow: 0 20px 30px rgba(0,0,0,0.5);
-    }
-    .game-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    .game-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.3rem; }
-    .game-desc { font-size: 0.8rem; opacity: 0.7; margin-bottom: 1rem; }
-    .game-stats { display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 1rem; }
-    .join-game { background: #4e2d89; border: none; padding: 0.5rem; border-radius: 2rem; color: white; width: 100%; font-weight: 600; cursor: pointer; transition: 0.1s; }
-    .join-game:active { transform: scale(0.97); }
-    .leaderboard-podium {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-    }
-    .podium-item {
-      text-align: center;
-      background: rgba(0,0,0,0.5);
-      border-radius: 1rem;
-      padding: 1rem;
-      width: 150px;
-      transition: 0.2s;
-    }
-    .podium-item.first {
-      background: linear-gradient(135deg, #ffd700, #ffb347);
-      transform: scale(1.05);
-      box-shadow: 0 0 15px gold;
-    }
-    .podium-item.second {
-      background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
-      box-shadow: 0 0 10px silver;
-    }
-    .podium-item.third {
-      background: linear-gradient(135deg, #cd7f32, #b87333);
-      box-shadow: 0 0 8px #cd7f32;
-    }
-    .podium-avatar { width: 64px; height: 64px; border-radius: 50%; margin-bottom: 0.5rem; border: 2px solid #fff; }
-    .leaderboard-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: rgba(0,0,0,0.4);
-      border-radius: 1rem;
-      overflow: hidden;
-    }
-    .leaderboard-table th, .leaderboard-table td {
-      padding: 0.8rem;
-      text-align: left;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    .leaderboard-table th {
-      cursor: pointer;
-      transition: 0.1s;
-    }
-    .leaderboard-table th:hover { color: #c084fc; }
-    .extra-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
-    }
-    .info-card {
-      background: rgba(0,0,0,0.4);
-      border-radius: 1.5rem;
-      padding: 1.2rem;
-      border: 1px solid rgba(155,90,255,0.3);
-      transition: 0.2s;
-    }
-    .info-card:hover { transform: translateY(-3px); border-color: #c084fc; }
-    .staff-member { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-    .staff-avatar { width: 48px; height: 48px; border-radius: 50%; }
-    .faq-question { font-weight: 700; margin-bottom: 0.3rem; cursor: pointer; }
-    .faq-answer { font-size: 0.85rem; opacity: 0.8; display: none; margin-bottom: 0.5rem; }
-    .vote-site-btn { background: #4e2d89; border: none; padding: 0.3rem 0.8rem; border-radius: 2rem; margin: 0.2rem; cursor: pointer; }
-    .footer { text-align: center; margin-top: 2rem; color: #aaa; border-top: 1px solid rgba(155,90,255,0.2); padding-top: 1.5rem; }
-    .placeholder { text-align: center; padding: 3rem; background: rgba(0,0,0,0.3); border-radius: 1.5rem; font-size: 1.2rem; }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Otk1 | صانع محتوى ومبرمج</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* Status page */
-    .status-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
-    .status-card { background: rgba(0,0,0,0.4); border-radius: 1.5rem; padding: 1.5rem; text-align: center; border: 1px solid rgba(155,90,255,0.3); transition: 0.2s; }
-    .status-card:hover { transform: translateY(-3px); border-color: #c084fc; }
-    .status-card i { font-size: 2.5rem; color: #9a4eff; display: block; margin-bottom: 0.8rem; }
-    .status-card .value { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.3rem; }
-    .status-card .label { font-size: 0.9rem; opacity: 0.7; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0b0710;
+            /* خلفية داكنة احتياطية */
+            padding: 20px;
+            /* التدرج الرئيسي من بنفسجي إلى بنفسجي غامق */
+            background: radial-gradient(ellipse at 50% 30%, #7b2ffc, #2d0b4e 70%, #130624);
+            background-attachment: fixed;
+        }
 
-    @media (max-width: 900px) {
-      .wrapper { flex-direction: column; }
-      .side-nav { width: 100%; height: auto; position: relative; flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: center; }
-      .nav-items { flex-direction: row; flex-wrap: wrap; }
-      .lang-account-group { margin-top: 0; flex-direction: row; flex-wrap: wrap; align-items: center; }
-      .main-content { padding: 1rem; }
-      .hero-title h2 { font-size: 1.8rem; }
-    }
-  </style>
+        /* ===== CARD ===== */
+        .card {
+            background: rgba(18, 8, 30, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 48px;
+            padding: 40px 36px 48px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(180, 100, 255, 0.15);
+            text-align: center;
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(180, 100, 255, 0.20);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 40px 80px rgba(90, 20, 180, 0.5), 0 0 0 1px rgba(200, 130, 255, 0.3);
+        }
+
+        /* ===== AVATAR ===== */
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a855f7, #6b21a8);
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: 700;
+            color: #fff;
+            box-shadow: 0 12px 32px rgba(120, 50, 200, 0.5), 0 0 0 3px rgba(200, 130, 255, 0.25);
+            user-select: none;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .avatar:hover {
+            box-shadow: 0 16px 44px rgba(140, 60, 230, 0.7), 0 0 0 4px rgba(210, 150, 255, 0.4);
+        }
+
+        /* ===== NAME ===== */
+        .name {
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #e0b3ff, #b77aff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 4px;
+            text-shadow: 0 0 30px rgba(160, 80, 255, 0.3);
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(160, 80, 255, 0.2);
+            backdrop-filter: blur(4px);
+            padding: 4px 18px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #c9a6ff;
+            border: 1px solid rgba(180, 100, 255, 0.25);
+            margin-bottom: 18px;
+            letter-spacing: 0.3px;
+        }
+
+        /* ===== BIO ===== */
+        .bio {
+            color: #d4c0f0;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 28px;
+            padding: 0 4px;
+            font-weight: 400;
+        }
+
+        .bio strong {
+            color: #e6ccff;
+            font-weight: 600;
+        }
+
+        .bio .highlight {
+            color: #c084fc;
+            font-weight: 500;
+        }
+
+        /* ===== DIVIDER ===== */
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #a855f7, #6b21a8, #a855f7);
+            margin: 0 auto 28px;
+            border-radius: 10px;
+            opacity: 0.7;
+        }
+
+        /* ===== SOCIAL BUTTONS ===== */
+        .social-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 16px 20px;
+            border-radius: 60px;
+            font-size: 17px;
+            font-weight: 600;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            background: rgba(40, 15, 65, 0.6);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(180, 100, 255, 0.15);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-btn i {
+            font-size: 22px;
+            width: 28px;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .social-btn span {
+            flex: 1;
+            text-align: center;
+        }
+
+        /* hover effects per platform */
+        .social-btn.tiktok:hover {
+            background: rgba(0, 0, 0, 0.7);
+            border-color: #ff0050;
+            box-shadow: 0 8px 28px rgba(255, 0, 80, 0.35);
+            transform: scale(1.02);
+        }
+        .social-btn.tiktok:hover i {
+            color: #ff0050;
+        }
+
+        .social-btn.youtube:hover {
+            background: rgba(30, 10, 40, 0.8);
+            border-color: #ff0033;
+            box-shadow: 0 8px 28px rgba(255, 0, 50, 0.35);
+            transform: scale(1.02);
+        }
+        .social-btn.youtube:hover i {
+            color: #ff0033;
+        }
+
+        .social-btn.instagram:hover {
+            background: rgba(30, 10, 40, 0.8);
+            border-color: #f09433;
+            box-shadow: 0 8px 28px rgba(240, 148, 51, 0.35);
+            transform: scale(1.02);
+        }
+        .social-btn.instagram:hover i {
+            color: #f09433;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 32px;
+            font-size: 13px;
+            color: rgba(180, 150, 210, 0.5);
+            letter-spacing: 0.5px;
+            border-top: 1px solid rgba(180, 100, 255, 0.08);
+            padding-top: 22px;
+        }
+
+        .footer i {
+            color: rgba(200, 150, 255, 0.4);
+            margin: 0 4px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .card {
+                padding: 30px 20px 36px;
+                border-radius: 36px;
+            }
+            .avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 38px;
+            }
+            .name {
+                font-size: 28px;
+            }
+            .bio {
+                font-size: 15px;
+            }
+            .social-btn {
+                padding: 14px 16px;
+                font-size: 15px;
+            }
+            .social-btn i {
+                font-size: 19px;
+                width: 24px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .card {
+                padding: 24px 16px 30px;
+            }
+            .name {
+                font-size: 24px;
+            }
+            .bio {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="orb-bg"></div>
-<div class="orb-glow" style="top:-20%; left:-20%;"></div>
-<div class="orb-glow" style="bottom:-30%; right:-20%; animation-duration: 25s;"></div>
-<div class="wrapper">
-  <div class="side-nav">
-    <div class="logo-area"><h1><i class="fas fa-cube"></i> Otk1 MC</h1></div>
-    <div class="nav-items">
-      <div class="nav-item" data-page="home"><i class="fas fa-home"></i> <span data-i18n="home">Home</span></div>
-      <div class="nav-item" data-page="leaderboard"><i class="fas fa-trophy"></i> <span data-i18n="leaderboard">Leaderboard</span></div>
-      <div class="nav-item" data-page="voting"><i class="fas fa-vote-yea"></i> <span data-i18n="voting">Voting</span></div>
-      <div class="nav-item" data-page="market"><i class="fas fa-store"></i> <span data-i18n="market">Market</span></div>
-      <div class="nav-item" data-page="social"><i class="fas fa-comments"></i> <span data-i18n="social">Social</span></div>
-      <div class="nav-item" data-page="status"><i class="fas fa-server"></i> <span data-i18n="status">Status</span></div>
-      <div class="nav-item" data-page="staff"><i class="fas fa-users"></i> <span data-i18n="staff">Staff</span></div>
-      <div class="nav-item" data-page="rules"><i class="fas fa-gavel"></i> <span data-i18n="rules">Rules</span></div>
-      <div class="nav-item" data-page="faq"><i class="fas fa-question-circle"></i> <span data-i18n="faq">FAQ</span></div>
-      <div class="nav-item" data-page="store"><i class="fas fa-shopping-cart"></i> <span data-i18n="store">Store</span></div>
-      <div class="nav-item" data-page="discord"><i class="fab fa-discord"></i> <span data-i18n="discord">Discord</span></div>
-      <div class="nav-item" data-page="support"><i class="fas fa-ticket-alt"></i> <span data-i18n="support">Support</span></div>
-    </div>
-    <div class="lang-account-group">
-      <button class="lang-toggle" id="langToggleBtn"><i class="fas fa-language"></i> <span id="langText">العربية</span></button>
-      <div class="auth-container" id="authContainer">
-        <div class="auth-tabs">
-          <div class="auth-tab" data-auth="login" data-i18n="loginTab">Login</div>
-          <div class="auth-tab" data-auth="signup" data-i18n="signupTab">Sign Up</div>
+
+    <div class="card">
+
+        <!-- ===== AVATAR ===== -->
+        <div class="avatar">O</div>
+
+        <!-- ===== NAME ===== -->
+        <h1 class="name">Otk1</h1>
+        <div class="badge">
+            <i class="fas fa-code" style="margin-left: 8px;"></i>
+            صانع محتوى · مبرمج
         </div>
-        <div id="loginForm" class="auth-form">
-          <input type="text" id="loginUsername" placeholder="Email or Username">
-          <input type="password" id="loginPassword" placeholder="Password">
-          <button id="doLogin" data-i18n="loginBtn">Login</button>
-          <div class="google-btn" id="googleSignInBtn"><i class="fab fa-google"></i> <span data-i18n="googleBtn">Sign in with Google</span></div>
-        </div>
-        <div id="signupForm" class="auth-form" style="display: none;">
-          <input type="text" id="signupUsername" placeholder="Username">
-          <input type="email" id="signupEmail" placeholder="Email">
-          <input type="password" id="signupPassword" placeholder="Password">
-          <button id="doSignup" data-i18n="signupBtn">Create Account</button>
-        </div>
-        <div id="userInfo" style="display: none;" class="user-info"></div>
-      </div>
-    </div>
-  </div>
-  <div class="main-content" id="mainContent"></div>
+
+        <!-- ===== BIO ===== -->
+        <p class="bio">
+            <strong>🎮 Otk1</strong> — صانع محتوى <span class="highlight">ألعاب منوّعة</span>،
+            أشارك تجاربَي في عالم الألعاب مع مجتمعي.
+            <br />
+            <i class="fas fa-laptop-code" style="color: #b77aff; margin-left: 6px;"></i>
+            وأيضاً <strong>مبرمج</strong> متخصص في
+            <span class="highlight">تطوير المواقع</span> و
+            <span class="highlight">سيرفرات ماين كرافت</span>.
+            <br />
+            <span style="font-size: 14px; color: #b99ad6;">
+                <i class="fas fa-heart" style="color: #c084fc; margin-left: 4px;"></i>
+                شغفي التقنية والإبداع
+            </span>
+        </p>
+
+        <div class="divider"></div>
+
+        <!-- ===== SOCIAL LINKS ===== -->
+        <div class="social-grid">
+
+            <!-- TikTok -->
+            <a href="https://www.tiktok.com/@otk1141?_r=1&_t=ZS-97H6fwPKSVp"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-btn tiktok">
+            <i class="fab fa-tiktok"></i>
+            <span>TikTok</span>
+            <i class="fas fa-arrow-up-right-from-square" style="font-size: 14px; opacity: 0.5;"></i>
+        </a>
+
+        <!-- YouTube -->
+        <a href="https://youtube.com/@otk1141?si=0APCdeiyfZSV3AMO"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="social-btn youtube">
+        <i class="fab fa-youtube"></i>
+        <span>YouTube</span>
+        <i class="fas fa-arrow-up-right-from-square" style="font-size: 14px; opacity: 0.5;"></i>
+    </a>
+
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/37.8b?igsh=eWI3MmdjYjNpbXF4"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="social-btn instagram">
+    <i class="fab fa-instagram"></i>
+    <span>Instagram</span>
+    <i class="fas fa-arrow-up-right-from-square" style="font-size: 14px; opacity: 0.5;"></i>
+</a>
+
 </div>
 
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<script>
-  (function() {
-    // ========== AUTH SYSTEM ==========
-    let currentUser = null;
-    const usersKey = 'otk1_users';
-    const currentUserKey = 'otk1_current_user';
-
-    function loadUsers() {
-      const stored = localStorage.getItem(usersKey);
-      return stored ? JSON.parse(stored) : {};
-    }
-    function saveUsers(users) { localStorage.setItem(usersKey, JSON.stringify(users)); }
-
-    function signup(username, email, password) {
-      if (!username || !email || !password) { alert(getTranslation("fillAllFields")); return false; }
-      const users = loadUsers();
-      if (users[username] || Object.values(users).some(u => u.email === email)) {
-        alert(getTranslation("userExists"));
-        return false;
-      }
-      users[username] = {
-        password: password,
-        email: email,
-        avatar: `https://ui-avatars.com/api/?background=9a4eff&color=fff&name=${encodeURIComponent(username)}`
-      };
-      saveUsers(users);
-      currentUser = { name: username };
-      localStorage.setItem(currentUserKey, username);
-      updateAuthUI();
-      renderPage(activePage);
-      return true;
-    }
-
-    function login(identifier, password) {
-      if (!identifier || !password) { alert(getTranslation("fillAllFields")); return false; }
-      const users = loadUsers();
-      let foundUser = null;
-      for (let [name, data] of Object.entries(users)) {
-        if (name === identifier || data.email === identifier) {
-          if (data.password === password) {
-            foundUser = name;
-            break;
-          }
-        }
-      }
-      if (!foundUser) { alert(getTranslation("invalidCred")); return false; }
-      currentUser = { name: foundUser };
-      localStorage.setItem(currentUserKey, foundUser);
-      updateAuthUI();
-      renderPage(activePage);
-      return true;
-    }
-
-    function logout() {
-      currentUser = null;
-      localStorage.removeItem(currentUserKey);
-      updateAuthUI();
-      renderPage(activePage);
-    }
-
-    function updateAuthUI() {
-      const loginDiv = document.getElementById('loginForm');
-      const signupDiv = document.getElementById('signupForm');
-      const userDiv = document.getElementById('userInfo');
-      if (currentUser) {
-        loginDiv.style.display = 'none';
-        signupDiv.style.display = 'none';
-        userDiv.style.display = 'flex';
-        const users = loadUsers();
-        const avatar = users[currentUser.name]?.avatar || `https://ui-avatars.com/api/?background=9a4eff&color=fff&name=${encodeURIComponent(currentUser.name)}`;
-        userDiv.innerHTML = `
-          <img src="${avatar}" style="width:32px;height:32px;border-radius:50%;">
-          <span class="user-name">${currentUser.name}</span>
-          <button class="signout-btn" onclick="window.logout()">${getTranslation("signOut")}</button>
-        `;
-      } else {
-        loginDiv.style.display = 'block';
-        signupDiv.style.display = 'none';
-        userDiv.style.display = 'none';
-        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-        document.querySelector('.auth-tab[data-auth="login"]').classList.add('active');
-      }
-    }
-
-    function parseJwt(token) {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-      return JSON.parse(jsonPayload);
-    }
-
-    function handleGoogleCredential(response) {
-      const payload = parseJwt(response.credential);
-      const email = payload.email;
-      const name = payload.name;
-      const users = loadUsers();
-      let existingUser = null;
-      for (let [uname, data] of Object.entries(users)) {
-        if (data.email === email) {
-          existingUser = uname;
-          break;
-        }
-      }
-      if (existingUser) {
-        currentUser = { name: existingUser };
-        localStorage.setItem(currentUserKey, existingUser);
-        updateAuthUI();
-        renderPage(activePage);
-        alert(getTranslation("welcomeBack") + existingUser);
-      } else {
-        let desiredUsername = prompt(getTranslation("chooseUsername"), name.replace(/\s/g, '').toLowerCase());
-        if (!desiredUsername) desiredUsername = "user" + Math.floor(Math.random()*10000);
-        let password = prompt(getTranslation("setPassword"), "");
-        if (!password) password = Math.random().toString(36).slice(-8);
-        if (users[desiredUsername]) {
-          alert(getTranslation("usernameTaken"));
-          return;
-        }
-        users[desiredUsername] = {
-          password: password,
-          email: email,
-          avatar: `https://ui-avatars.com/api/?background=9a4eff&color=fff&name=${encodeURIComponent(desiredUsername)}`
-        };
-        saveUsers(users);
-        currentUser = { name: desiredUsername };
-        localStorage.setItem(currentUserKey, desiredUsername);
-        updateAuthUI();
-        renderPage(activePage);
-        alert(getTranslation("accountCreated"));
-      }
-    }
-
-    function initGoogle() {
-      if (typeof google === 'undefined') return;
-      const clientId = "YOUR_GOOGLE_CLIENT_ID"; // Replace with real client ID
-      google.accounts.id.initialize({
-        client_id: clientId,
-        callback: handleGoogleCredential
-      });
-      const btn = document.getElementById("googleSignInBtn");
-      if (btn) btn.addEventListener("click", () => google.accounts.id.prompt());
-    }
-
-    document.querySelectorAll('.auth-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        const mode = tab.getAttribute('data-auth');
-        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById('loginForm').style.display = mode === 'login' ? 'block' : 'none';
-        document.getElementById('signupForm').style.display = mode === 'signup' ? 'block' : 'none';
-      });
-    });
-    document.getElementById('doLogin').addEventListener('click', () => {
-      login(document.getElementById('loginUsername').value, document.getElementById('loginPassword').value);
-    });
-    document.getElementById('doSignup').addEventListener('click', () => {
-      signup(document.getElementById('signupUsername').value, document.getElementById('signupEmail').value, document.getElementById('signupPassword').value);
-    });
-    window.logout = logout;
-
-    const storedUser = localStorage.getItem(currentUserKey);
-    if (storedUser) {
-      const users = loadUsers();
-      if (users[storedUser]) currentUser = { name: storedUser };
-    }
-    updateAuthUI();
-
-    // ========== TRANSLATIONS (FULLY BILINGUAL) ==========
-    const translations = {
-      en: {
-        home: "Home", leaderboard: "Leaderboard", voting: "Voting", market: "Market", social: "Social",
-        status: "Status", staff: "Staff", rules: "Rules", faq: "FAQ", store: "Store", discord: "Discord", support: "Support",
-        heroTitle: "Welcome To Otk1 MC", heroSub: "25+ unique game modes",
-        online: "online", coins: "coins", loginTab: "Login", signupTab: "Sign Up",
-        loginBtn: "Login", googleBtn: "Sign in with Google", signupBtn: "Create Account",
-        signOut: "Sign out", fillAllFields: "Please fill all fields",
-        userExists: "Username or email already exists", invalidCred: "Invalid credentials",
-        welcomeBack: "Welcome back, ", chooseUsername: "Choose a username:",
-        setPassword: "Set a password:", usernameTaken: "Username already taken.",
-        accountCreated: "Account created! You can now log in.",
-        topTitle: "🏆 Top Player from Each Game", gamesTitle: "🎮 Game Modes",
-        lobbyBtn: "Enter Lobby", copyIp: "Copy IP", leaderboardTitle: "Global Ranking",
-        voteMsg: "🗳️ The vote will start after the server starts",
-        marketMsg: "🛒 The market will open after the server starts",
-        socialMsg: "💬 The social feed will be available after the server starts",
-        copied: "IP copied!",
-        staffTitle: "👥 Our Staff Team", roleOwner: "Owner", roleAdmin: "Admin", roleCoOwner: "Co-Owner",
-        ruleTitle: "Server Rules",
-        faqTitle: "Frequently Asked Questions",
-        voteNow: "Vote Now",
-        statusTitle: "Server Status",
-        playersOnline: "Players Online", tps: "TPS", uptime: "Uptime",
-        serverIpJava: "Java IP", serverIpBedrock: "Bedrock IP", discordInvite: "Join Discord",
-        storeComingSoon: "Store coming soon!",
-        discordInfo: "Join our Discord server for updates, events, and support.",
-        supportInfo: "Need help? Join our Discord server and open a ticket.",
-        faq1q: "How do I join the server?", faq1a: "Open Minecraft Java Edition, click Multiplayer, add server address play.otk1mc.com. No mods required, but 1.20+ recommended.",
-        faq2q: "What game modes are available?", faq2a: "We offer 25+ modes including Survival, BedWars, SkyWars, BoxPvP, LifeSteal, Parkour, UHC, and many more. Check the home page for the full list.",
-        faq3q: "How do I earn coins?", faq3a: "Coins are earned by playing games, winning matches, voting for the server, and trading on the player market.",
-        faq4q: "What are the ranks and perks?", faq4a: "We have a tiered rank system (VIP, PRO, ELITE, etc.) purchasable in the store. Each rank grants cosmetic perks, chat prefixes, and exclusive kit access. Ranks do not give gameplay advantages.",
-        faq5q: "How do I report a player?", faq5a: "Use /report <username> <reason> in-game. For urgent issues or evidence, open a ticket on our Discord server. False reporting is punishable.",
-        faq6q: "What are the punishment stages?", faq6a: "Usually: Warning → Mute / Tempban → Permanent Ban. Severe offenses (cheating, doxing) result in immediate permanent ban. Ban appeals can be made via Discord.",
-        faq7q: "The server is lagging. What can I do?", faq7a: "If you experience lag, try connecting via direct IP (otk1mc.com) or using European proxy. Also ensure your own connection is stable.",
-        faq8q: "Can I use mods or texture packs?", faq8a: "We allow cosmetic mods like OptiFine, shaders, and 5zig. Unfair client modifications (see Rules) are strictly forbidden. Allowed minimaps must not show players, caves, or entities.",
-        faq9q: "How can I become a staff member?", faq9a: "Join our Discord, fill out the staff application form in #applications. Requirements: age 16+, active player, clean record, and strong communication skills.",
-        faq10q: "How do I donate / buy a rank?", faq10a: "Visit our store at store.otk1mc.com (coming soon). You can purchase ranks, coin bundles, and cosmetic items.",
-        rule1: "No cheating or hacking", rule1desc: "Any form of unfair advantage (hacked clients, X-ray, auto-clickers) is strictly prohibited.",
-        rule2: "Respect all players", rule2desc: "Toxicity, harassment, discrimination, or hate speech will not be tolerated.",
-        rule3: "No spam or advertising", rule3desc: "Keep chat clean. No advertising other servers, websites, or soliciting for real money.",
-        rule4: "No griefing in Survival", rule4desc: "Respect other players' builds and claims. Team griefing is also punishable.",
-        rule5: "Follow moderator instructions", rule5desc: "Staff have the final say. Do not argue or disrespect moderation decisions.",
-        rule6: "No inappropriate usernames/skins", rule6desc: "Offensive, misleading, or impersonating usernames/skins are forbidden. You will be asked to change them.",
-        rule7: "No exploiting bugs/glitches", rule7desc: "Report any bug/glitch immediately. Abusing game-breaking mechanics will result in a ban.",
-        rule8: "No unapproved modifications", rule8desc: "Mods providing unfair advantages (macros, autoclickers, minimaps showing entities) are not allowed. Use only allowed client-side mods.",
-        rule9: "No account sharing/selling", rule9desc: "Your account is your responsibility. Sharing, selling, or trading accounts is prohibited and may lead to permanent ban.",
-        rule10: "No server disruption", rule10desc: "Do not attempt to crash, lag, or DDoS the server. Do not build lag machines or use excessive entities.",
-        rule11: "No ban evasion", rule11desc: "Using alternate accounts to bypass a ban is strictly forbidden. It will extend your punishment.",
-        rule12: "No threats or doxing", rule12desc: "Threats of real-life harm, DDoS, or exposing personal information will result in an immediate permanent ban.",
-        rule13: "Fair play in all modes", rule13desc: "No teaming with opponents, win-trading, or boosting. Play competitively but respectfully."
-      },
-      ar: {
-        home: "الرئيسية", leaderboard: "لوحة المتصدرين", voting: "التصويت", market: "السوق", social: "المجتمع",
-        status: "الحالة", staff: "الموظفون", rules: "القوانين", faq: "الأسئلة الشائعة", store: "متجر", discord: "ديسكورد", support: "الدعم",
-        heroTitle: "مرحبًا بكم في Otk1 MC", heroSub: "أكثر من 25 وضع لعب فريد",
-        online: "متصل", coins: "عملات", loginTab: "تسجيل الدخول", signupTab: "إنشاء حساب",
-        loginBtn: "تسجيل دخول", googleBtn: "تسجيل الدخول عبر جوجل", signupBtn: "إنشاء حساب",
-        signOut: "تسجيل خروج", fillAllFields: "يرجى ملء جميع الحقول",
-        userExists: "اسم المستخدم أو البريد الإلكتروني موجود مسبقًا", invalidCred: "بيانات غير صحيحة",
-        welcomeBack: "مرحبًا بعودتك، ", chooseUsername: "اختر اسم مستخدم:",
-        setPassword: "أدخل كلمة مرور:", usernameTaken: "اسم المستخدم مستخدم مسبقًا.",
-        accountCreated: "تم إنشاء الحساب! يمكنك الآن تسجيل الدخول.",
-        topTitle: "🏆 أفضل لاعب من كل لعبة", gamesTitle: "🎮 الألعاب",
-        lobbyBtn: "انضم للمنطقة", copyIp: "نسخ الآي بي", leaderboardTitle: "الترتيب العالمي",
-        voteMsg: "🗳️ سيبدأ التصويت بعد بدء السيرفر",
-        marketMsg: "🛒 سيفتح السوق بعد بدء السيرفر",
-        socialMsg: "💬 سيكون المنشورات متاحة بعد بدء السيرفر",
-        copied: "تم نسخ الآي بي!",
-        staffTitle: "👥 فريق العمل", roleOwner: "المالك", roleAdmin: "إداري", roleCoOwner: "المالك المشترك",
-        ruleTitle: "قوانين السيرفر",
-        faqTitle: "الأسئلة الشائعة",
-        voteNow: "صوّت الآن",
-        statusTitle: "حالة السيرفر",
-        playersOnline: "اللاعبين المتصلين", tps: "TPS", uptime: "مدة التشغيل",
-        serverIpJava: "IP جافا", serverIpBedrock: "IP بيدروك", discordInvite: "انضم إلى ديسكورد",
-        storeComingSoon: "المتجر قريباً!",
-        discordInfo: "انضم إلى سيرفر الديسكورد للحصول على التحديثات والفعاليات والدعم.",
-        supportInfo: "تحتاج مساعدة؟ انضم إلى سيرفر الديسكورد لدينا وافتح تذكرة.",
-        faq1q: "كيف أنضم إلى السيرفر؟", faq1a: "افتح ماين كرافت جافا، اضغط Multiplayer، أضف عنوان السيرفر play.otk1mc.com. لا تحتاج مودات، لكن يفضل إصدار 1.20+.",
-        faq2q: "ما الألعاب المتاحة؟", faq2a: "نقدم أكثر من 25 لعبة تشمل سيرفايفر، بيد وورز، سكاي وورز، بوكس بي في بي، سرقة القلوب، باركور، يو إتش سي وغيرها. القائمة الكاملة في الصفحة الرئيسية.",
-        faq3q: "كيف أحصل على العملات؟", faq3a: "تكسب العملات عن طريق اللعب، الفوز بالمباريات، التصويت للسيرفر، والتداول في سوق اللاعبين.",
-        faq4q: "ما هي الرتب والمزايا؟", faq4a: "لدينا نظام رتب (VIP، PRO، ELITE إلخ) يمكن شراؤها من المتجر. تمنح مزايا تجميلية، بادئات شات، وحقائب حصرية دون أي أفضليه في اللعب.",
-        faq5q: "كيف أبلغ عن لاعب؟", faq5a: "استخدم الأمر /report <اسم اللاعب> <السبب> داخل اللعبة. للحالات العاجلة أو الأدلة، افتح تذكرة على ديسكورد. التبليغ الكاذب يعاقب عليه.",
-        faq6q: "ما هي مراحل العقوبات؟", faq6a: "عادةً: تحذير ← كتم / حظر مؤقت ← حظر دائم. المخالفات الجسيمة (غش، كشف معلومات) تؤدي إلى حظر دائم فوري. طلبات الاستئناف عبر ديسكورد.",
-        faq7q: "السيرفر يعاني من تأخير. ماذا أفعل؟", faq7a: "جرب الاتصال عبر IP المباشر (otk1mc.com) أو استخدم بروكسي أوروبا. تأكد أيضًا من استقرار اتصالك. نعمل باستمرار على تحسين البنية التحتية.",
-        faq8q: "هل يمكنني استخدام مودات أو حزم نسيج؟", faq8a: "نسمح بمودات تجميلية مثل OptiFine و shaders و 5zig. المودات غير العادلة (انظر القوانين) ممنوعة. الخرائط المسموحة يجب ألا تظهر لاعبين أو كهوف أو كائنات.",
-        faq9q: "كيف أصبح عضوًا في فريق العمل؟", faq9a: "انضم إلى ديسكورد، واملأ نموذج التقديم في #applications. المتطلبات: العمر 16+، لاعب نشط، سجل نظيف، ومهارات تواصل قوية.",
-        faq10q: "كيف أتبرع / أشتري رتبة؟", faq10a: "زر متجرنا على store.otk1mc.com (قريبًا). يمكنك شراء رتب وحزم عملات وعناصر تجميلية. جميع المدفوعات آمنة وتدعم السيرفر.",
-        rule1: "لا للغش أو الاختراق", rule1desc: "أي شكل من أشكال الميزة غير العادلة (عملاء مخترقة، إكس راي، نقر تلقائي) ممنوع تمامًا.",
-        rule2: "احترم جميع اللاعبين", rule2desc: "لن يتم التسامح مع الإساءة أو المضايقة أو التمييز أو خطاب الكراهية.",
-        rule3: "لا للإزعاج أو الإعلانات", rule3desc: "حافظ على نظافة المحادثة. لا تعلن عن سيرفرات أخرى أو مواقع أو تطلب أموالاً حقيقية.",
-        rule4: "لا للتخريب في وضع البقاء", rule4desc: "احترم ممتلكات الآخرين. التخريب الجماعي يعاقب عليه أيضًا.",
-        rule5: "اتبع تعليمات المشرفين", rule5desc: "للمشرفين الكلمة الأخيرة. لا تجادل أو تستهين بقرارات الإدارة.",
-        rule6: "لا للأسماء أو السكنات غير اللائقة", rule6desc: "الأسماء أو السكنات المسيئة أو المضللة أو المنتحلة ممنوعة. سيُطلب منك تغييرها.",
-        rule7: "لا لاستغلال الأخطاء أو الثغرات", rule7desc: "بلغ عن أي خطأ أو ثغرة فورًا. استغلال آليات تكسر اللعبة يؤدي إلى حظر.",
-        rule8: "لا للتعديلات غير المعتمدة", rule8desc: "التعديلات التي تمنح ميزات غير عادلة (ماكرو، نقر تلقائي، خرائط مصغرة تظهر الكائنات) غير مسموح بها. استخدم فقط التعديلات المسموح بها.",
-        rule9: "لا لمشاركة أو بيع الحسابات", rule9desc: "حسابك مسؤوليتك. مشاركة أو بيع أو تداول الحسابات ممنوع وقد يؤدي إلى حظر دائم.",
-        rule10: "لا لتعطيل السيرفر المتعمد", rule10desc: "لا تحاول إيقاف السيرفر أو إبطائه أو هجمات حجب الخدمة. لا تبني آلات تأخير أو تستخدم كيانات مفرطة.",
-        rule11: "لا للتهرب من الحظر", rule11desc: "استخدام حسابات بديلة لتجاوز الحظر ممنوع تمامًا. سيؤدي إلى تمديد العقوبة.",
-        rule12: "لا تهدد أو تكشف معلومات الآخرين", rule12desc: "التهديد بإيذاء حقيقي أو هجمات إلكترونية أو كشف معلومات شخصية يؤدي إلى حظر دائم فوري.",
-        rule13: "اللعب النظيف في جميع الأوضاع", rule13desc: "لا تتحالف مع الخصوم أو تتلاعب بالفوز أو ترفع التصنيف. العب بتنافسية واحترام."
-      }
-    };
-
-    let currentLang = localStorage.getItem('otk1_lang') || 'en';
-    function t(key) { return translations[currentLang][key]; }
-    function getTranslation(key) { return t(key); }
-
-    // ========== GAME DATA ==========
-    const modes = [
-      { id:"survival", name:{en:"Survival",ar:"سيرفايفر"}, icon:"🌿", color:"#2ecc71", players:412, desc:{en:"Classic survival, claims",ar:"سيرفايفر كلاسيكي"} },
-      { id:"lifesteal", name:{en:"LifeSteal",ar:"سرقة القلوب"}, icon:"❤️", color:"#e74c3c", players:345, desc:{en:"Steal hearts, bounty",ar:"اسرق القلوب"} },
-      { id:"boxpvp", name:{en:"BoxPvP",ar:"بوكس بي في بي"}, icon:"⚔️", color:"#cb9eff", players:378, desc:{en:"ELO ranked, kits",ar:"تصنيف ELO"} },
-      { id:"bedwars", name:{en:"BedWars",ar:"بيد وورز"}, icon:"🛏️", color:"#f39c12", players:512, desc:{en:"Protect bed, team PvP",ar:"احمِ سريرك"} },
-      { id:"eggwars", name:{en:"EggWars",ar:"إيغ وورز"}, icon:"🥚", color:"#1abc9c", players:467, desc:{en:"Egg protection",ar:"حماية البيضة"} },
-      { id:"skywars", name:{en:"SkyWars",ar:"سكاي وورز"}, icon:"☁️", color:"#3498db", players:489, desc:{en:"Island PvP",ar:"قتال في الجزر"} },
-      { id:"thebridge", name:{en:"The Bridge",ar:"الجسر"}, icon:"🌉", color:"#ff6b6b", players:234, desc:{en:"Bridge dueling",ar:"مبارزات الجسر"} },
-      { id:"ctf", name:{en:"Capture The Flag",ar:"أسرع العلم"}, icon:"🏁", color:"#4ecdc4", players:356, desc:{en:"Capture the flag",ar:"أسرع العلم"} },
-      { id:"hideandseek", name:{en:"Hide and Seek",ar:"غميعة"}, icon:"🔍", color:"#ffe66d", players:189, desc:{en:"Classic hide & seek",ar:"غميعة"} },
-      { id:"murder", name:{en:"Murder Mystery",ar:"لغز القتل"}, icon:"🔪", color:"#292f36", players:278, desc:{en:"Social deduction",ar:"استنتاج اجتماعي"} },
-      { id:"skyblock", name:{en:"SkyBlock",ar:"سكاي بلوك"}, icon:"☁️", color:"#4c9aff", players:512, desc:{en:"Island survival",ar:"نجاة في جزيرة"} },
-      { id:"oneblock", name:{en:"OneBlock",ar:"ون بلوك"}, icon:"🧱", color:"#ff9f4a", players:345, desc:{en:"Regenerating block",ar:"كتلة متجددة"} },
-      { id:"survivalgames", name:{en:"Survival Games",ar:"ألعاب البقاء"}, icon:"🏆", color:"#ff4757", players:478, desc:{en:"Hunger Games",ar:"باتل رويال"} },
-      { id:"buildbattle", name:{en:"Build Battle",ar:"معركة البناء"}, icon:"🎨", color:"#70a1ff", players:289, desc:{en:"Creative building",ar:"بناء إبداعي"} },
-      { id:"parkour", name:{en:"Parkour",ar:"باركور"}, icon:"🏃", color:"#ffa502", players:312, desc:{en:"Time trials",ar:"مسارات زمنية"} },
-      { id:"uhc", name:{en:"UHC",ar:"يو إتش سي"}, icon:"⛏️", color:"#cd6133", players:234, desc:{en:"Ultra Hardcore",ar:"هاكور"} },
-      { id:"kitpvp", name:{en:"KitPvP",ar:"كيت بي في بي"}, icon:"⚔️", color:"#eccc68", players:423, desc:{en:"Kit-based PvP",ar:"بي في بي بمجموعات"} },
-      { id:"blockparty", name:{en:"Block Party",ar:"حفلة الكتل"}, icon:"🎵", color:"#ff69b4", players:345, desc:{en:"Music & reaction",ar:"موسيقى ورد فعل"} },
-      { id:"tnttag", name:{en:"TNT Tag",ar:"تاغ التي إن تي"}, icon:"💣", color:"#ff4444", players:389, desc:{en:"Pass the TNT",ar:"مرر التي إن تي"} },
-      { id:"kartracers", name:{en:"Turbo Kart Racers",ar:"سباقات الكارت"}, icon:"🏎️", color:"#00d2d3", players:389, desc:{en:"Kart racing",ar:"سباقات كارت"} },
-      { id:"woolwars", name:{en:"Wool Wars",ar:"حروب الصوف"}, icon:"🧶", color:"#f1c40f", players:278, desc:{en:"Team wool capture",ar:"أسرع الصوف الجماعي"} },
-      { id:"dropparty", name:{en:"Drop Party",ar:"حفل الإسقاط"}, icon:"🎁", color:"#e67e22", players:567, desc:{en:"Random loot events",ar:"أحداث غنائم عشوائية"} },
-      { id:"factions", name:{en:"Factions",ar:"فصائل"}, icon:"🏰", color:"#95a5a6", players:312, desc:{en:"Clan wars, raiding",ar:"حروب العشائر"} },
-      { id:"prison", name:{en:"Prison",ar:"سجن"}, icon:"⛓️", color:"#bdc3c7", players:456, desc:{en:"Mine, rank up",ar:"احفر، ترقى"} },
-      { id:"creative", name:{en:"Creative",ar:"إبداعي"}, icon:"🎨", color:"#9b59b6", players:234, desc:{en:"Free build",ar:"بناء حر"} }
-    ];
-
-    const topPlayers = {
-      survival: { name:"CraftyKing", stat:"15840 Kills" },
-      lifesteal: { name:"ShadowHeart", stat:"487 Hearts" },
-      boxpvp: { name:"FighterPro", stat:"2680 ELO" },
-      bedwars: { name:"BedBreaker", stat:"1120 Wins" },
-      eggwars: { name:"EggGuardian", stat:"980 Wins" },
-      skywars: { name:"SkyLord", stat:"2100 Wins" },
-      thebridge: { name:"BridgeKing", stat:"3450 Wins" },
-      ctf: { name:"FlagRunner", stat:"890 Captures" },
-      hideandseek: { name:"ShadowHider", stat:"890 Wins" },
-      murder: { name:"DetectiveMaster", stat:"234 Cases" },
-      skyblock: { name:"IslandMaster", stat:"Level 125" },
-      oneblock: { name:"BlockMaster", stat:"Stage 12" },
-      survivalgames: { name:"HungerKing", stat:"234 Wins" },
-      buildbattle: { name:"CreativePro", stat:"345 Wins" },
-      parkour: { name:"ParkourKing", stat:"45.2s Best" },
-      uhc: { name:"UHCPro", stat:"89 Wins" },
-      kitpvp: { name:"PvPMaster", stat:"3450 Kills" },
-      blockparty: { name:"DanceMaster", stat:"567 Wins" },
-      tnttag: { name:"TagMaster", stat:"890 Tags" },
-      kartracers: { name:"RacingPro", stat:"32.5s Best Lap" },
-      woolwars: { name:"WoolCollector", stat:"345 Captures" },
-      dropparty: { name:"LootMaster", stat:"5670 Items" },
-      factions: { name:"WarLord", stat:"456 Kills" },
-      prison: { name:"MinerKing", stat:"Rank A" },
-      creative: { name:"BuilderPro", stat:"125 Plots" }
-    };
-
-    let globalLeaderboard = [
-      { rank:1, name:"CraftyKing", kills:15840, wins:1240, economy:89200, tier:"diamond", avatar:"CraftyKing" },
-      { rank:2, name:"ShadowHeart", kills:12340, wins:1120, economy:78200, tier:"emerald", avatar:"ShadowHeart" },
-      { rank:3, name:"FighterPro", kills:11200, wins:1670, economy:68400, tier:"gold", avatar:"FighterPro" },
-      { rank:4, name:"BedBreaker", kills:9870, wins:1120, economy:56700, tier:"gold", avatar:"BedBreaker" },
-      { rank:5, name:"SkyLord", kills:9100, wins:2100, economy:52300, tier:"silver", avatar:"SkyLord" },
-      { rank:6, name:"PixelWizard", kills:8240, wins:980, economy:47800, tier:"silver", avatar:"PixelWizard" },
-      { rank:7, name:"VampLord", kills:7650, wins:890, economy:43200, tier:"bronze", avatar:"VampLord" },
-      { rank:8, name:"BlockyNinja", kills:7120, wins:760, economy:38900, tier:"bronze", avatar:"BlockyNinja" },
-      { rank:9, name:"MinerMike", kills:6780, wins:690, economy:34500, tier:"bronze", avatar:"MinerMike" },
-      { rank:10, name:"OtkPlayer", kills:3450, wins:287, economy:12500, tier:"bronze", avatar:"OtkPlayer" }
-    ];
-
-    let currentSort = { field: "kills", order: "desc" };
-
-    function renderLeaderboardTable() {
-      let sorted = [...globalLeaderboard];
-      if (currentSort.field === "kills") sorted.sort((a,b) => currentSort.order === "desc" ? b.kills - a.kills : a.kills - b.kills);
-      else if (currentSort.field === "wins") sorted.sort((a,b) => currentSort.order === "desc" ? b.wins - a.wins : a.wins - b.wins);
-      else if (currentSort.field === "economy") sorted.sort((a,b) => currentSort.order === "desc" ? b.economy - a.economy : a.economy - b.economy);
-      else sorted.sort((a,b) => a.rank - b.rank);
-      const top3 = sorted.slice(0,3);
-      const rest = sorted.slice(3);
-      return `
-        <div class="leaderboard-podium">
-          ${top3.map((p,i) => `<div class="podium-item ${i===0?'first':i===1?'second':'third'}"><img class="podium-avatar" src="https://mc-heads.net/avatar/${p.avatar}" onerror="this.src='https://via.placeholder.com/64'"><div><strong>${p.name}</strong></div><div>${p.kills} kills</div><div>💰 ${p.economy}</div></div>`).join('')}
-        </div>
-        <table class="leaderboard-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Player</th>
-              <th onclick="window.changeSort('kills')">Kills <span>${currentSort.field==='kills'?(currentSort.order==='desc'?'▼':'▲'):'↕'}</span></th>
-              <th onclick="window.changeSort('wins')">Wins <span>${currentSort.field==='wins'?(currentSort.order==='desc'?'▼':'▲'):'↕'}</span></th>
-              <th onclick="window.changeSort('economy')">Economy <span>${currentSort.field==='economy'?(currentSort.order==='desc'?'▼':'▲'):'↕'}</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            ${rest.map(p => `
-              <tr>
-                <td style="font-weight:600;">#${p.rank}</td>
-                <td><img src="https://mc-heads.net/avatar/${p.avatar}" width="24" style="border-radius:50%; margin-right:8px;"> ${p.name}</td>
-                <td>${p.kills.toLocaleString()}</td>
-                <td>${p.wins.toLocaleString()}</td>
-                <td>💰 ${p.economy.toLocaleString()}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      `;
-    }
-    window.changeSort = (field) => {
-      if (currentSort.field === field) currentSort.order = currentSort.order === "desc" ? "asc" : "desc";
-      else { currentSort.field = field; currentSort.order = "desc"; }
-      const leaderboardDiv = document.getElementById("leaderboardContainer");
-      if(leaderboardDiv) leaderboardDiv.innerHTML = renderLeaderboardTable();
-    };
-
-    // ========== LOBBY GENERATOR (ENHANCED UI) ==========
-    function generateLobbyPageHTML(modeId) {
-      const mode = modes.find(m => m.id === modeId);
-      if(!mode) return "<h2>Error</h2>";
-      const name = mode.name[currentLang];
-      const color = mode.color;
-      const desc = mode.desc[currentLang];
-      const serverIp = `${modeId}.otk1mc.com:25565`;
-      const top = topPlayers[modeId];
-      const iconMap = {
-        "🌿":"fa-tree","❤️":"fa-heartbeat","⚔️":"fa-cube","🛏️":"fa-bed","🥚":"fa-egg","☁️":"fa-cloud-sun",
-        "🌉":"fa-bridge","🏁":"fa-flag-checkered","🔍":"fa-search","🔪":"fa-kitchen-knife","🧱":"fa-cube",
-        "🏆":"fa-trophy","🎨":"fa-palette","🏃":"fa-running","⛏️":"fa-pickaxe","🎵":"fa-music",
-        "💣":"fa-bomb","🏎️":"fa-car","🧶":"fa-hand-sparkles","🎁":"fa-gift","🏰":"fa-building","⛓️":"fa-chain"
-      };
-      const icon = iconMap[mode.icon] || "fa-cube";
-      const topStatValue = parseInt(top.stat.split(' ')[0]);
-      const leaderboardRows = [
-        { rank:1, name:top.name, stat:topStatValue, balance:"100k+" },
-        { rank:2, name:"RunnerUp", stat:Math.floor(topStatValue*0.8), balance:"75k" },
-        { rank:3, name:"Challenger", stat:Math.floor(topStatValue*0.6), balance:"50k" },
-        { rank:4, name:"Contender", stat:Math.floor(topStatValue*0.4), balance:"30k" },
-        { rank:5, name:"Newcomer", stat:Math.floor(topStatValue*0.2), balance:"10k" }
-      ];
-      const statLabel = top.stat.split(' ')[1];
-      const backLabel = currentLang === "en" ? "Back to Hub" : "العودة إلى المركز";
-      const copiedMsg = t("copied");
-      const copyIpLabel = t("copyIp");
-      const onlineLabel = t("online");
-
-      return `<!DOCTYPE html>
-<html lang="${currentLang}">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Otk1 MC | ${name}</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Inter', sans-serif; background: #0a0418; color: white; overflow-x: hidden; }
-  .orb-bg { position: fixed; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 10% 20%, #1f0c3c, #0a0418); }
-  .orb-glow { position: fixed; width: 50vw; height: 50vw; border-radius: 50%; background: radial-gradient(circle, rgba(155,90,255,0.3) 0%, rgba(155,90,255,0) 70%); filter: blur(80px); z-index: -1; animation: floatGlow 20s infinite alternate; }
-  @keyframes floatGlow { 0% { transform: translate(10%, 20%) scale(1); opacity: 0.4; } 100% { transform: translate(-10%, -10%) scale(1.3); opacity: 0.8; } }
-  .container { max-width: 1200px; margin: 0 auto; padding: 2rem; position: relative; z-index: 2; }
-  .back-btn { display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 0.6rem 1.5rem; border-radius: 3rem; color: ${color}; text-decoration: none; border: 1px solid ${color}; transition: 0.2s; font-weight: 600; }
-  .back-btn:hover { background: ${color}; color: #000; transform: translateX(-5px); }
-  .hero { text-align: center; padding: 2.5rem 1rem; background: rgba(0,0,0,0.4); backdrop-filter: blur(12px); border-radius: 2rem; margin-bottom: 2rem; }
-  .hero i { font-size: 4rem; filter: drop-shadow(0 0 8px ${color}); margin-bottom: 0.5rem; display: block; }
-  .hero h1 { font-size: 2.5rem; margin: 0.5rem 0; }
-  .hero p { opacity: 0.8; }
-  .ip-section { background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); border-radius: 2rem; padding: 1rem; text-align: center; margin: 2rem 0; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; border: 1px solid ${color}; }
-  .copy-ip { background: ${color}; border: none; padding: 0.6rem 1.5rem; border-radius: 3rem; color: #000; font-weight: bold; cursor: pointer; }
-  .stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1.5rem; margin: 2rem 0; }
-  .stat-card { background: rgba(0,0,0,0.55); backdrop-filter: blur(8px); border-radius: 1.5rem; padding: 1.2rem; text-align: center; border-left: 4px solid ${color}; }
-  .stat-card i { font-size: 2rem; color: ${color}; display: block; margin-bottom: 0.5rem; }
-  .stat-card .number { font-size: 2rem; font-weight: 800; }
-  .leaderboard-container { background: rgba(0,0,0,0.5); border-radius: 1.5rem; padding: 1.5rem; margin: 1.5rem 0; }
-  .rank-table { width: 100%; border-collapse: collapse; }
-  .rank-table th, .rank-table td { padding: 0.8rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
-  .rank-1 { background: linear-gradient(90deg, rgba(255,215,0,0.2), transparent); }
-  footer { text-align: center; margin-top: 2rem; color: #aaa; }
-  @media (max-width: 700px) { .hero h1 { font-size: 2rem; } .container { padding: 1rem; } }
-</style>
-</head>
-<body>
-<div class="orb-bg"></div>
-<div class="orb-glow" style="top:-20%; left:-20%;"></div>
-<div class="orb-glow" style="bottom:-30%; right:-20%; animation-duration: 25s;"></div>
-<div class="container">
-  <a href="#" onclick="window.location.href = localStorage.getItem('otk1_main_url') || '/'; return false;" class="back-btn"><i class="fas fa-arrow-left"></i> ${backLabel}</a>
-  <div class="hero"><i class="fas ${icon}"></i><h1>${name}</h1><p>${desc}</p></div>
-  <div class="ip-section"><span style="font-family: monospace; font-size: 1.3rem;">${serverIp}</span><button class="copy-ip" onclick="navigator.clipboard.writeText('${serverIp}'); alert('${copiedMsg}');">📋 ${copyIpLabel}</button></div>
-  <div class="stat-cards">
-    <div class="stat-card"><i class="fas fa-users"></i><div class="number" id="liveCount">${mode.players}</div><div>${onlineLabel}</div></div>
-    <div class="stat-card"><i class="fas fa-chart-line"></i><div class="number">20.0</div><div>TPS</div></div>
-    <div class="stat-card"><i class="fas fa-crown"></i><div class="number">${top.name}</div><div>Top Player</div></div>
-  </div>
-  <div class="leaderboard-container">
-    <div class="leaderboard-title"><i class="fas fa-trophy"></i> Hall of Fame</div>
-    <table class="rank-table">
-      <thead><tr><th>#</th><th>Player</th><th>${statLabel}</th><th>💰 Balance</th></tr></thead>
-      <tbody>${leaderboardRows.map(p => `<tr class="rank-${p.rank}"><td><span style="background:#2a1a4a; width:28px;height:28px;display:inline-block;line-height:28px;text-align:center;border-radius:50%;">${p.rank}</span></td><td><i class="fas fa-user"></i> ${p.name}</td><td>${p.stat}</td><td>💰 ${p.balance}</td></tr>`).join('')}</tbody>
-    </table>
-  </div>
-  <footer><i class="fas fa-pickaxe"></i> Otk1 MC · ${name}</footer>
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+    <i class="fas fa-crown" style="color: #b77aff;"></i>
+    Otk1 · 2026
+    <i class="fas fa-infinity" style="margin-right: 6px;"></i>
 </div>
-<script>let count = ${mode.players}; setInterval(() => { count += Math.floor(Math.random() * 11) - 5; count = Math.max(50, count); document.getElementById('liveCount').innerText = count; }, 7000);<\/script>
-</body>
-</html>`;
-    }
 
-    function openLobby(modeId) {
-      localStorage.setItem('otk1_main_url', window.location.href);
-      const html = generateLobbyPageHTML(modeId);
-      const blob = new Blob([html], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      window.location.href = url;
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-    }
+</div>
 
-    function copyMainIP() {
-      navigator.clipboard.writeText("play.otk1mc.com");
-      alert(t("copied"));
-    }
-
-    // Staff, Rules & FAQ (COMPLETE - includes KrizmAxe as Co-Owner)
-    const staffList = [
-      { name: "Otk1", roleEn: "Owner", roleAr: "المالك", avatar: "Otk1" },
-      { name: "KrizmAxe", roleEn: "Co-Owner", roleAr: "المالك المشترك", avatar: "KrizmAxe" },
-      { name: "Mariam_0", roleEn: "Admin", roleAr: "إداري", avatar: "Mariam_0" }
-    ];
-    const rulesList = [
-      { titleEn: "No cheating or hacking", descEn: "Any form of unfair advantage (hacked clients, X-ray, auto-clickers) is strictly prohibited.", titleAr: "لا للغش أو الاختراق", descAr: "أي شكل من أشكال الميزة غير العادلة (عملاء مخترقة، إكس راي، نقر تلقائي) ممنوع تمامًا." },
-      { titleEn: "Respect all players", descEn: "Toxicity, harassment, discrimination, or hate speech will not be tolerated.", titleAr: "احترم جميع اللاعبين", descAr: "لن يتم التسامح مع الإساءة أو المضايقة أو التمييز أو خطاب الكراهية." },
-      { titleEn: "No spam or advertising", descEn: "Keep chat clean. No advertising other servers, websites, or soliciting for real money.", titleAr: "لا للإزعاج أو الإعلانات", descAr: "حافظ على نظافة المحادثة. لا تعلن عن سيرفرات أخرى أو مواقع أو تطلب أموالاً حقيقية." },
-      { titleEn: "No griefing in Survival", descEn: "Respect other players' builds and claims. Team griefing is also punishable.", titleAr: "لا للتخريب في وضع البقاء", descAr: "احترم ممتلكات الآخرين. التخريب الجماعي يعاقب عليه أيضًا." },
-      { titleEn: "Follow moderator instructions", descEn: "Staff have the final say. Do not argue or disrespect moderation decisions.", titleAr: "اتبع تعليمات المشرفين", descAr: "للمشرفين الكلمة الأخيرة. لا تجادل أو تستهين بقرارات الإدارة." },
-      { titleEn: "No inappropriate usernames/skins", descEn: "Offensive, misleading, or impersonating usernames/skins are forbidden. You will be asked to change them.", titleAr: "لا للأسماء أو السكنات غير اللائقة", descAr: "الأسماء أو السكنات المسيئة أو المضللة أو المنتحلة ممنوعة. سيُطلب منك تغييرها." },
-      { titleEn: "No exploiting bugs/glitches", descEn: "Report any bug/glitch immediately. Abusing game-breaking mechanics will result in a ban.", titleAr: "لا لاستغلال الأخطاء أو الثغرات", descAr: "بلغ عن أي خطأ أو ثغرة فورًا. استغلال آليات تكسر اللعبة يؤدي إلى حظر." },
-      { titleEn: "No unapproved modifications", descEn: "Mods providing unfair advantages (macros, autoclickers, minimaps showing entities) are not allowed. Use only allowed client-side mods.", titleAr: "لا للتعديلات غير المعتمدة", descAr: "التعديلات التي تمنح ميزات غير عادلة (ماكرو، نقر تلقائي، خرائط مصغرة تظهر الكائنات) غير مسموح بها. استخدم فقط التعديلات المسموح بها." },
-      { titleEn: "No account sharing/selling", descEn: "Your account is your responsibility. Sharing, selling, or trading accounts is prohibited and may lead to permanent ban.", titleAr: "لا لمشاركة أو بيع الحسابات", descAr: "حسابك مسؤوليتك. مشاركة أو بيع أو تداول الحسابات ممنوع وقد يؤدي إلى حظر دائم." },
-      { titleEn: "No server disruption", descEn: "Do not attempt to crash, lag, or DDoS the server. Do not build lag machines or use excessive entities.", titleAr: "لا لتعطيل السيرفر المتعمد", descAr: "لا تحاول إيقاف السيرفر أو إبطائه أو هجمات حجب الخدمة. لا تبني آلات تأخير أو تستخدم كيانات مفرطة." },
-      { titleEn: "No ban evasion", descEn: "Using alternate accounts to bypass a ban is strictly forbidden. It will extend your punishment.", titleAr: "لا للتهرب من الحظر", descAr: "استخدام حسابات بديلة لتجاوز الحظر ممنوع تمامًا. سيؤدي إلى تمديد العقوبة." },
-      { titleEn: "No threats or doxing", descEn: "Threats of real-life harm, DDoS, or exposing personal information will result in an immediate permanent ban.", titleAr: "لا تهدد أو تكشف معلومات الآخرين", descAr: "التهديد بإيذاء حقيقي أو هجمات إلكترونية أو كشف معلومات شخصية يؤدي إلى حظر دائم فوري." },
-      { titleEn: "Fair play in all modes", descEn: "No teaming with opponents, win-trading, or boosting. Play competitively but respectfully.", titleAr: "اللعب النظيف في جميع الأوضاع", descAr: "لا تتحالف مع الخصوم أو تتلاعب بالفوز أو ترفع التصنيف. العب بتنافسية واحترام." }
-    ];
-    // FIXED FAQ – all entries fully bilingual
-    const faqList = [
-      { qEn: "How do I join the server?", aEn: "Open Minecraft Java Edition, click Multiplayer, add server address play.otk1mc.com. No mods required, but 1.20+ recommended.", qAr: "كيف أنضم إلى السيرفر؟", aAr: "افتح ماين كرافت جافا، اضغط Multiplayer، أضف عنوان السيرفر play.otk1mc.com. لا تحتاج مودات، لكن يفضل إصدار 1.20+." },
-      { qEn: "What game modes are available?", aEn: "We offer 25+ modes including Survival, BedWars, SkyWars, BoxPvP, LifeSteal, Parkour, UHC, and many more. Check the home page for the full list.", qAr: "ما الألعاب المتاحة؟", aAr: "نقدم أكثر من 25 لعبة تشمل سيرفايفر، بيد وورز، سكاي وورز، بوكس بي في بي، سرقة القلوب، باركور، يو إتش سي وغيرها. القائمة الكاملة في الصفحة الرئيسية." },
-      { qEn: "How do I earn coins?", aEn: "Coins are earned by playing games, winning matches, voting for the server, and trading on the player market.", qAr: "كيف أحصل على العملات؟", aAr: "تكسب العملات عن طريق اللعب، الفوز بالمباريات، التصويت للسيرفر، والتداول في سوق اللاعبين." },
-      { qEn: "What are the ranks and perks?", aEn: "We have a tiered rank system (VIP, PRO, ELITE, etc.) purchasable in the store. Each rank grants cosmetic perks, chat prefixes, and exclusive kit access. Ranks do not give gameplay advantages.", qAr: "ما هي الرتب والمزايا؟", aAr: "لدينا نظام رتب (VIP، PRO، ELITE إلخ) يمكن شراؤها من المتجر. تمنح مزايا تجميلية، بادئات شات، وحقائب حصرية دون أي أفضليه في اللعب." },
-      { qEn: "How do I report a player?", aEn: "Use /report <username> <reason> in-game. For urgent issues or evidence, open a ticket on our Discord server. False reporting is punishable.", qAr: "كيف أبلغ عن لاعب؟", aAr: "استخدم الأمر /report <اسم اللاعب> <السبب> داخل اللعبة. للحالات العاجلة أو الأدلة، افتح تذكرة على ديسكورد. التبليغ الكاذب يعاقب عليه." },
-      { qEn: "What are the punishment stages?", aEn: "Usually: Warning → Mute / Tempban → Permanent Ban. Severe offenses (cheating, doxing) result in immediate permanent ban. Ban appeals can be made via Discord.", qAr: "ما هي مراحل العقوبات؟", aAr: "عادةً: تحذير ← كتم / حظر مؤقت ← حظر دائم. المخالفات الجسيمة (غش، كشف معلومات) تؤدي إلى حظر دائم فوري. طلبات الاستئناف عبر ديسكورد." },
-      { qEn: "The server is lagging. What can I do?", aEn: "If you experience lag, try connecting via direct IP (otk1mc.com) or using European proxy. Also ensure your own connection is stable.", qAr: "السيرفر يعاني من تأخير. ماذا أفعل؟", aAr: "جرب الاتصال عبر IP المباشر (otk1mc.com) أو استخدم بروكسي أوروبا. تأكد أيضًا من استقرار اتصالك. نعمل باستمرار على تحسين البنية التحتية." },
-      { qEn: "Can I use mods or texture packs?", aEn: "We allow cosmetic mods like OptiFine, shaders, and 5zig. Unfair client modifications (see Rules) are strictly forbidden. Allowed minimaps must not show players, caves, or entities.", qAr: "هل يمكنني استخدام مودات أو حزم نسيج؟", aAr: "نسمح بمودات تجميلية مثل OptiFine و shaders و 5zig. المودات غير العادلة (انظر القوانين) ممنوعة. الخرائط المسموحة يجب ألا تظهر لاعبين أو كهوف أو كائنات." },
-      { qEn: "How can I become a staff member?", aEn: "Join our Discord, fill out the staff application form in #applications. Requirements: age 16+, active player, clean record, and strong communication skills.", qAr: "كيف أصبح عضوًا في فريق العمل؟", aAr: "انضم إلى ديسكورد، واملأ نموذج التقديم في #applications. المتطلبات: العمر 16+، لاعب نشط، سجل نظيف، ومهارات تواصل قوية." },
-      { qEn: "How do I donate / buy a rank?", aEn: "Visit our store at store.otk1mc.com (coming soon). You can purchase ranks, coin bundles, and cosmetic items.", qAr: "كيف أتبرع / أشتري رتبة؟", aAr: "زر متجرنا على store.otk1mc.com (قريبًا). يمكنك شراء رتب وحزم عملات وعناصر تجميلية. جميع المدفوعات آمنة وتدعم السيرفر." }
-    ];
-
-    // ========== STATUS PAGE ==========
-    function renderStatusPage() {
-      const main = document.getElementById("mainContent");
-      const javaIp = "play.otk1mc.com";
-      const bedrockIp = "bedrock.otk1mc.com:19132";
-      const discordLink = "https://discord.gg/otk1mc";
-      main.innerHTML = `
-        <div class="grid-title"><i class="fas fa-server"></i> ${t("statusTitle")}</div>
-        <div class="status-cards">
-          <div class="status-card">
-            <i class="fas fa-users"></i>
-            <div class="value" id="livePlayers">2,431</div>
-            <div class="label">${t("playersOnline")}</div>
-          </div>
-          <div class="status-card">
-            <i class="fas fa-chart-line"></i>
-            <div class="value">20.0</div>
-            <div class="label">${t("tps")}</div>
-          </div>
-          <div class="status-card">
-            <i class="fas fa-clock"></i>
-            <div class="value">14d 6h</div>
-            <div class="label">${t("uptime")}</div>
-          </div>
-        </div>
-        <div class="info-card" style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
-          <div><strong>${t("serverIpJava")}:</strong> <span style="font-family: monospace; font-size: 1.2rem;">${javaIp}</span></div>
-          <button class="copy-ip-btn" onclick="navigator.clipboard.writeText('${javaIp}'); alert('${t("copied")}')"><i class="far fa-copy"></i> ${t("copyIp")}</button>
-        </div>
-        <div class="info-card" style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
-          <div><strong>${t("serverIpBedrock")}:</strong> <span style="font-family: monospace; font-size: 1.2rem;">${bedrockIp}</span></div>
-          <button class="copy-ip-btn" onclick="navigator.clipboard.writeText('${bedrockIp}'); alert('${t("copied")}')"><i class="far fa-copy"></i> ${t("copyIp")}</button>
-        </div>
-        <div class="info-card" style="text-align: center;">
-          <a href="${discordLink}" target="_blank" class="copy-ip-btn" style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1rem;"><i class="fab fa-discord"></i> ${t("discordInvite")}</a>
-        </div>
-      `;
-      setInterval(() => {
-        const el = document.getElementById("livePlayers");
-        if (el) {
-          let count = 2400 + Math.floor(Math.random() * 200);
-          el.innerText = count.toLocaleString();
-        }
-      }, 8000);
-    }
-
-    // ========== PAGE RENDERER ==========
-    let activePage = "home";
-    function renderPage(page) {
-      activePage = page;
-      const main = document.getElementById("mainContent");
-      if(!main) return;
-
-      if(page === "home") {
-        const topPlayersHtml = modes.map(m => `<div class="top-card"><div class="top-icon">${m.icon}</div><div class="top-info"><h4>${m.name[currentLang]}</h4><p>🏆 ${topPlayers[m.id].name}<br>${topPlayers[m.id].stat}</p></div></div>`).join('');
-        const modesHtml = modes.map(m => `<div class="game-card" data-mode="${m.id}"><div class="game-icon" style="color:${m.color}">${m.icon}</div><div class="game-name">${m.name[currentLang]}</div><div class="game-desc">${m.desc[currentLang]}</div><div class="game-stats"><span>🔥 ${m.players} ${t("online")}</span><span>🏷️ Competitive</span></div><button class="join-game">${t("lobbyBtn")}</button></div>`).join('');
-        const userGreeting = currentUser ? `<div class="hero-stat"><div class="number">👋 ${currentUser.name.split(' ')[0]}</div><div>Logged in</div></div>` : '';
-        main.innerHTML = `
-          <div class="hero-stats">
-            <div class="hero-title"><h2>${t("heroTitle")}</h2><p>${t("heroSub")}</p></div>
-            <div class="hero-stats-box">
-              <div class="hero-stat"><div class="number">2,431</div><div>${t("online")}</div></div>
-              <div class="hero-stat"><div class="number">4,250</div><div>${t("coins")}</div></div>
-              ${userGreeting}
-            </div>
-            <button class="copy-ip-btn" id="copyMainIpBtn"><i class="far fa-copy"></i> ${t("copyIp")}</button>
-          </div>
-          <div class="grid-title">${t("topTitle")}</div>
-          <div class="top-players-grid">${topPlayersHtml}</div>
-          <div class="grid-title">${t("gamesTitle")}</div>
-          <div class="modes-grid">${modesHtml}</div>
-          <div class="grid-title">📢 Vote for the Server</div>
-          <div class="extra-grid">
-            <div class="info-card"><h3>PlanetMinecraft</h3><button class="vote-site-btn" onclick="window.open('https://planetminecraft.com/server/otk1mc/vote','_blank')">${t("voteNow")}</button></div>
-            <div class="info-card"><h3>MinecraftServers.org</h3><button class="vote-site-btn" onclick="window.open('https://minecraftservers.org/vote/otk1mc','_blank')">${t("voteNow")}</button></div>
-          </div>
-        `;
-        document.getElementById("copyMainIpBtn")?.addEventListener("click", copyMainIP);
-        document.querySelectorAll(".game-card").forEach(card => {
-          const modeId = card.dataset.mode;
-          card.addEventListener("click", (e) => { if(e.target.classList.contains("join-game")) e.stopPropagation(); openLobby(modeId); });
-          card.querySelector(".join-game")?.addEventListener("click", (e) => { e.stopPropagation(); openLobby(modeId); });
-        });
-      } else if(page === "leaderboard") {
-        main.innerHTML = `<div class="grid-title">${t("leaderboardTitle")}</div><div id="leaderboardContainer">${renderLeaderboardTable()}</div>`;
-      } else if(page === "voting") {
-        main.innerHTML = `<div class="placeholder"><i class="fas fa-vote-yea"></i> ${t("voteMsg")}</div>`;
-      } else if(page === "market") {
-        main.innerHTML = `<div class="placeholder"><i class="fas fa-store"></i> ${t("marketMsg")}</div>`;
-      } else if(page === "social") {
-        main.innerHTML = `<div class="placeholder"><i class="fas fa-comments"></i> ${t("socialMsg")}</div>`;
-      } else if(page === "status") {
-        renderStatusPage();
-      } else if(page === "staff") {
-        const staffHtml = staffList.map(s => `<div class="info-card"><div class="staff-member"><img src="https://mc-heads.net/avatar/${s.avatar}" class="staff-avatar" onerror="this.src='https://via.placeholder.com/48'"><div><strong>${s.name}</strong><br>${currentLang === "en" ? s.roleEn : s.roleAr}</div></div></div>`).join('');
-        main.innerHTML = `<div class="grid-title">${t("staffTitle")}</div><div class="extra-grid">${staffHtml}</div>`;
-      } else if(page === "rules") {
-        const rulesHtml = rulesList.map(r => `<div class="info-card"><h3>${currentLang === "en" ? r.titleEn : r.titleAr}</h3><p>${currentLang === "en" ? r.descEn : r.descAr}</p></div>`).join('');
-        main.innerHTML = `<div class="grid-title">${t("ruleTitle")}</div><div class="extra-grid">${rulesHtml}</div>`;
-      } else if(page === "faq") {
-        const faqHtml = faqList.map((f, idx) => `
-          <div class="info-card">
-            <div class="faq-question" onclick="document.getElementById('faqAns${idx}').style.display = document.getElementById('faqAns${idx}').style.display === 'block' ? 'none' : 'block'">${currentLang === "en" ? f.qEn : f.qAr}</div>
-            <div id="faqAns${idx}" class="faq-answer">${currentLang === "en" ? f.aEn : f.aAr}</div>
-          </div>
-        `).join('');
-        main.innerHTML = `<div class="grid-title">${t("faqTitle")}</div><div class="extra-grid">${faqHtml}</div>`;
-        faqList.forEach((_, idx) => {
-          const ans = document.getElementById(`faqAns${idx}`);
-          if(ans) ans.style.display = 'none';
-        });
-      } else if(page === "store") {
-        main.innerHTML = `<div class="placeholder"><i class="fas fa-shopping-cart"></i> ${t("storeComingSoon")}</div>`;
-      } else if(page === "discord") {
-        const discordLink = "https://discord.gg/otk1mc";
-        main.innerHTML = `
-          <div class="grid-title"><i class="fab fa-discord"></i> ${t("discord")}</div>
-          <div class="info-card" style="text-align: center;">
-            <p>${t("discordInfo")}</p>
-            <a href="${discordLink}" target="_blank" class="copy-ip-btn" style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1rem; margin-top: 1rem;"><i class="fab fa-discord"></i> ${t("discordInvite")}</a>
-          </div>
-        `;
-      } else if(page === "support") {
-        main.innerHTML = `<div class="placeholder"><i class="fas fa-ticket-alt"></i> ${t("supportInfo")}</div>`;
-      }
-    }
-
-    // ========== LANGUAGE & INIT ==========
-    function applyTranslations() {
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (translations[currentLang][key]) el.innerText = translations[currentLang][key];
-      });
-      document.getElementById("langText").innerText = currentLang === "en" ? "العربية" : "EN";
-      renderPage(activePage);
-    }
-
-    document.getElementById("langToggleBtn").addEventListener("click", () => {
-      currentLang = currentLang === "en" ? "ar" : "en";
-      localStorage.setItem('otk1_lang', currentLang);
-      applyTranslations();
-    });
-    applyTranslations();
-
-    document.querySelectorAll(".nav-item").forEach(item => {
-      item.addEventListener("click", () => {
-        document.querySelectorAll(".nav-item").forEach(nav => nav.classList.remove("active"));
-        item.classList.add("active");
-        renderPage(item.dataset.page);
-      });
-    });
-    document.querySelector(".nav-item[data-page='home']").classList.add("active");
-    initGoogle();
-    renderPage("home");
-
-    setInterval(() => {
-      const heroStatNumber = document.querySelector('.hero-stat .number');
-      if (heroStatNumber && activePage === 'home') {
-        let newCount = 2400 + Math.floor(Math.random() * 200);
-        heroStatNumber.innerText = newCount;
-      }
-      if (activePage === 'home') {
-        const modeCards = document.querySelectorAll('.game-card .game-stats span:first-child');
-        if (modeCards.length === modes.length) {
-          modes.forEach((mode, idx) => {
-            const newPlayers = Math.max(100, mode.players + (Math.random() > 0.5 ? 1 : -1) * Math.floor(Math.random() * 15));
-            mode.players = newPlayers;
-            if (modeCards[idx]) modeCards[idx].innerHTML = `🔥 ${newPlayers} ${t("online")}`;
-          });
-        }
-      }
-    }, 8000);
-  })();
-</script>
 </body>
 </html>
